@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooking Kannamma Collections</title>
+
+<style>
+body { margin:0; font-family:sans-serif; background:#fafafa; }
+
+/* HEADER */
+header {
+  background:#ff4d4d;
+  color:white;
+  text-align:center;
+  padding:15px;
+}
+
+/* GRID */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;
+  padding:10px;
+}
+
+/* CARD */
+.card {
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  cursor:pointer;
+}
+
+.card h4, .card p {
+  margin:5px;
+  text-align:center;
+}
+
+/* BUTTON */
+button {
+  width:100%;
+  border:none;
+  padding:8px;
+  background:#25D366;
+  color:white;
+  cursor:pointer;
+}
+
+/* CART */
+.cart {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:white;
+  padding:10px;
+  box-shadow:0 -2px 5px rgba(0,0,0,0.2);
+}
+
+/* MODAL */
+.modal {
+  display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+}
+.modal img {
+  display:block;
+  margin:auto;
+  max-width:90%;
+  margin-top:50px;
+}
+
+/* REVIEWS */
+.review {
+  background:white;
+  margin:10px;
+  padding:10px;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Cooking Kannamma Collections ❤️</h2>
+  <p>🍲 Food | 👗 Dresses | Order on WhatsApp</p>
+</header>
+
+<!-- PRODUCTS -->
+<div class="grid" id="products"></div>
+
+<!-- CART -->
+<div class="cart">
+  🛒 Total: ₹<span id="total">0</span>
+  <button onclick="orderNow()">Order</button>
+</div>
+
+<!-- REVIEWS -->
+<div class="review">😍 Super tasty food!</div>
+<div class="review">👗 Dress quality amazing!</div>
+
+<!-- IMAGE ZOOM -->
+<div id="modal" class="modal" onclick="closeZoom()">
+  <img id="zoomImg">
+</div>
+
+<script>
+let cart=[], total=0;
+
+/* 👉 ADD YOUR PRODUCTS HERE */
+const products = [
+  {name:"Chicken Gravy", price:250, img:"https://via.placeholder.com/200"},
+  {name:"Egg Dosa", price:80, img:"https://via.placeholder.com/200"},
+  {name:"Party Wear Dress", price:999, img:"https://via.placeholder.com/200"},
+  {name:"Cotton Set", price:499, img:"https://via.placeholder.com/200"}
+];
+
+function loadProducts(){
+  let html="";
+  products.forEach((p,i)=>{
+    html += `
+    <div class="card">
+      <img src="${p.img}" onclick="zoom('${p.img}')">
+      <h4>${p.name}</h4>
+      <p>₹${p.price}</p>
+      <button onclick="addCart(${i})">Add to Cart</button>
+    </div>`;
+  });
+  document.getElementById("products").innerHTML=html;
+}
+
+function addCart(i){
+  cart.push(products[i]);
+  total += products[i].price;
+  document.getElementById("total").innerText = total;
+}
+
+function orderNow(){
+  let msg="Order:%0A";
+  cart.forEach(i=>{
+    msg+=i.name+" - ₹"+i.price+"%0A";
+  });
+  msg+="Total: ₹"+total;
+  window.open("https://wa.me/91YOURNUMBER?text="+msg);
+}
+
+/* IMAGE ZOOM */
+function zoom(src){
+  document.getElementById("modal").style.display="block";
+  document.getElementById("zoomImg").src=src;
+}
+function closeZoom(){
+  document.getElementById("modal").style.display="none";
+}
+
+loadProducts();
+</script>
+
+</body>
+</html>
